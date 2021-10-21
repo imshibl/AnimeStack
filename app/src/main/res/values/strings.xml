@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Anime List App</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <string name="all">All</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="favorites">Favorites</string>
+    <string name="movies">Movies</string>
+    <string name="most_watched_shows">Most Watched Shows</string>
+    <string name="version">Version: 1.0</string>
+    <string name="appName">Anime Stack</string>
+    <string name="watch_list_icon_in_main_screen">watch list icon in main screen</string>
+    <string name="go_to_top_fab_button">go to top fab button</string>
+    <string name="app_icon">app icon</string>
+    <string name="cover_image">cover image</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="Explore"
+        android:icon="@drawable/explore"/>
+    <item
+        android:id="@+id/watchlist"
+        android:title="Watch List"
+        android:icon="@drawable/bookmark"/>
+    <item
+        android:id="@+id/share"
+        android:title="Share This App"
+        android:icon="@drawable/share"/>
+    <item
+        android:id="@+id/rate"
+        android:title="Rate This App"
+        android:icon="@drawable/star"/>
+
+
+</menu>

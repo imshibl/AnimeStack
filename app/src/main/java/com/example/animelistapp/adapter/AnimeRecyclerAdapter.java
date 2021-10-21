@@ -1,0 +1,209 @@
+package com.example.animelistapp.adapter;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.animelistapp.R;
+import com.example.animelistapp.database.DatabaseClient;
+import com.example.animelistapp.database.Task;
+import com.example.animelistapp.model.AnimeModel;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
+import com.google.android.material.card.MaterialCardView;
+
+import java.util.List;
+
+public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdapter.MyHolder> {
+    Context context;
+    List<AnimeModel> animeModelList;
+
+    public AnimeRecyclerAdapter(Context context, List<AnimeModel> animeModelList) {
+        this.context = context;
+        this.animeModelList = animeModelList;
+    }
+
+    @NonNull
+    @Override
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.anime_list_layout, parent, false);
+        return new MyHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+
+
+
+        try {
+            String name = animeModelList.get(position).getTitle();
+            String rating = animeModelList.get(position).getRating();
+            String cover = animeModelList.get(position).getCoverImage();
+            holder.title.setText(name);
+            holder.rating.setText(rating);
+
+            String desc = animeModelList.get(position).getDescription();
+//            String halfDesc = desc.substring(0, 80);
+            holder.description.setText(desc);
+
+            holder.type.setText("Type:" + animeModelList.get(position).getSubType());
+            holder.ageRating.setText("Age Rating:" + animeModelList.get(position).getAgeRating());
+
+            String subType = animeModelList.get(position).getSubType();
+            if (subType.equals("movie")) {
+                holder.status.setVisibility(View.INVISIBLE);
+            } else {
+                holder.status.setText("Status:" + animeModelList.get(position).getStatus());
+            }
+
+
+            Glide.with(context)
+                    .load(animeModelList.get(position).getPosterImage())
+                    .placeholder(R.drawable.loading1)
+                    .into(holder.posterImage);
+
+            holder.animeCard.setOnClickListener(V -> {
+                AlertDialog.Builder dialogBox = new AlertDialog.Builder(context);
+                View view = View.inflate(context, R.layout.custom_alert_dialog, null);
+
+                TextView title = view.findViewById(R.id.title);
+                ImageView poster = view.findViewById(R.id.poster);
+                ImageView coverImg = view.findViewById(R.id.Cover_img);
+                TextView rating1 = view.findViewById(R.id.rating);
+                TextView type = view.findViewById(R.id.type);
+                TextView ageRating = view.findViewById(R.id.ageRating);
+                TextView description = view.findViewById(R.id.description);
+
+
+                title.setText(name);
+                rating1.setText(rating);
+                type.setText("Type:" + animeModelList.get(position).getSubType());
+                ageRating.setText("Age Rating:" + animeModelList.get(position).getAgeRating());
+                description.setText(desc);
+                Glide.with(context)
+                        .load(animeModelList.get(position).getPosterImage())
+                        .placeholder(R.drawable.loading1)
+                        .into(poster);
+                try {
+                    if (!(cover == null)) {
+                        Glide.with(context)
+                                .load(cover)
+                                .placeholder(R.drawable.loading1)
+                                .into(coverImg);
+                    }else{
+                        poster.setVisibility(View.GONE);
+                        coverImg.setVisibility(View.GONE);
+                    }
+
+                } catch (Exception e) {
+                    poster.setVisibility(View.GONE);
+                    coverImg.setVisibility(View.GONE);
+                }
+
+
+                dialogBox.setView(view);
+                dialogBox.create();
+                dialogBox.show();
+            });
+
+            holder.animeCard.setOnLongClickListener(V ->{
+                saveTask(position);
+                return true;
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void saveTask(int position) {
+        String title = animeModelList.get(position).getTitle();
+        String type = animeModelList.get(position).getSubType();
+        String description = animeModelList.get(position).getDescription();
+
+        class SaveTask extends AsyncTask<Void, Void, Void>{
+            boolean dataExits;
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                Task task = new Task();
+                task.setTitle(title);
+                task.setType(type);
+                task.setDescription(description);
+
+
+                dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+                        .taskDao().exists(title);
+
+                if(dataExits){
+                    Log.d("appdata", "already here");
+                }else{
+                    DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+                            .taskDao()
+                            .insert(task);
+                }
+
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                if(dataExits){
+                    Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+        SaveTask st = new SaveTask();
+        st.execute();
+    }
+
+    @Override
+    public int getItemCount() {
+        return animeModelList.size();
+    }
+
+    static class MyHolder extends RecyclerView.ViewHolder {
+
+        ImageView posterImage;
+        TextView title, rating, description, type, ageRating, status;
+        MaterialCardView animeCard;
+
+
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
+
+            posterImage = itemView.findViewById(R.id.poster_image);
+            title = itemView.findViewById(R.id.title);
+            rating = itemView.findViewById(R.id.rating);
+            description = itemView.findViewById(R.id.description);
+            type = itemView.findViewById(R.id.subType);
+            ageRating = itemView.findViewById(R.id.ageRating);
+            status = itemView.findViewById(R.id.status);
+
+            animeCard = itemView.findViewById(R.id.anime_card);
+        }
+    }
+
+    private void showDialogBox(View customLayout, String name) {
+
+    }
+}
