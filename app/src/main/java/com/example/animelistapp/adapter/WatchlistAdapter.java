@@ -57,6 +57,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHo
             watchList.remove(t);
             deleteItem(t);
             notifyItemRemoved(position);
+            notifyItemRangeChanged(position, watchList.size());
 //            notifyDataSetChanged();
 
 
