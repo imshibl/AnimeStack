@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.animelistapp.adapter.WatchlistAdapter;
 import com.example.animelistapp.database.DatabaseClient;
@@ -19,6 +21,8 @@ public class WatchlistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     WatchlistAdapter watchlistAdapter;
 
+    TextView emptyTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +33,16 @@ public class WatchlistActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        toolbar.setTitle("Watchlist");
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         toolbar.setNavigationOnClickListener(V-> finish());
 
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        emptyTv = findViewById(R.id.emptyTV);
+
 
         getWatchList();
     }
@@ -62,8 +70,16 @@ public class WatchlistActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Task> tasks) {
                 super.onPostExecute(tasks);
-                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks);
+                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks, emptyTv);
                 recyclerView.setAdapter(watchlistAdapter);
+
+
+
+                if(tasks.isEmpty()){
+                    emptyTv.setVisibility(View.VISIBLE);
+                }else{
+                    emptyTv.setVisibility(View.GONE);
+                }
 
 
             }
@@ -72,7 +88,5 @@ public class WatchlistActivity extends AppCompatActivity {
         getWatchlist.execute();
     }
 
-    public void updateWatchList(int position){
-        watchlistAdapter.notifyItemRemoved(position);
-    }
+
 }

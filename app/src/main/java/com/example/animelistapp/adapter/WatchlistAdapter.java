@@ -29,10 +29,13 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHo
     Context mContext;
     List<Task> watchList;
 
+    TextView emptyTV;
 
-    public WatchlistAdapter(Context mContext, List<Task> watchList) {
+
+    public WatchlistAdapter(Context mContext, List<Task> watchList, TextView emptyTV) {
         this.mContext = mContext;
         this.watchList = watchList;
+        this.emptyTV = emptyTV;
 
     }
 
@@ -54,6 +57,12 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHo
             watchList.remove(t);
             deleteItem(t);
             notifyItemRemoved(position);
+//            notifyDataSetChanged();
+
+
+            if(watchList.isEmpty()){
+                emptyTV.setVisibility(View.VISIBLE);
+            }
 
 
         });
