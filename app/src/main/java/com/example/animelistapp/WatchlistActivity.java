@@ -62,12 +62,17 @@ public class WatchlistActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Task> tasks) {
                 super.onPostExecute(tasks);
-                watchlistAdapter = new WatchlistAdapter(getApplicationContext(), tasks);
+                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks);
                 recyclerView.setAdapter(watchlistAdapter);
+
 
             }
         }
         GetWatchlist getWatchlist = new GetWatchlist();
         getWatchlist.execute();
+    }
+
+    public void updateWatchList(int position){
+        watchlistAdapter.notifyItemRemoved(position);
     }
 }
