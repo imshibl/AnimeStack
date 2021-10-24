@@ -3,20 +3,26 @@ package com.example.animelistapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -356,6 +362,15 @@ public class MainActivity extends AppCompatActivity {
         otherBtn5.setEnabled(true);
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_bar, menu);
+        MenuItem item = menu.findItem(R.id.searchIcon);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Search");
+        EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        editText.setTextColor(Color.WHITE);
+        return super.onCreateOptionsMenu(menu);
+    }
 }
 
