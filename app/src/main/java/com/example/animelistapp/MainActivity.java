@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     String sort = "all";
 
+    boolean isSearching = false;
+
 
 
 
@@ -181,16 +183,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(() -> {
-//            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(1);
-//            View view = viewHolder.itemView;
-//            TapTargetView.showFor(this, TapTarget.forView(view, "Tap", "Tap on item to display full details and long press on item to add in to watch list")
-//            .cancelable(true)
-//            .drawShadow(true)
-//            .tintTarget(true));
-//
-//        }, 4000);
 
 
 //sorting
@@ -268,9 +260,15 @@ public class MainActivity extends AppCompatActivity {
         //pagination
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                page = page + 10;
-                progressBar.setVisibility(View.VISIBLE);
-                networking.getAllData(page, pageLimit, sort);
+
+                if(!isSearching){
+                    page = page + 10;
+                    progressBar.setVisibility(View.VISIBLE);
+                    networking.getAllData(page, pageLimit, sort);
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -366,10 +364,53 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_bar, menu);
         MenuItem item = menu.findItem(R.id.searchIcon);
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                animeModelList.clear();
+                networking.updateData();
+                sortingOptionsArea.setVisibility(View.GONE);
+                isSearching = true;
+                progressBar.setVisibility(View.GONE);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                animeModelList.clear();
+                page=0;
+                networking.updateData();
+                networking.getAllData(page, pageLimit, sort);
+                sortingOptionsArea.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
+
+        //search functions
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint("Search");
         EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         editText.setTextColor(Color.WHITE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(!newText.equals("")){
+                    progressBar.setVisibility(View.VISIBLE);
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                }
+                networking.getSearchData(newText);
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 }
