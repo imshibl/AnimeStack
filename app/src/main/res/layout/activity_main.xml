@@ -25,12 +25,13 @@
             android:background="@color/appBar_Color"
             android:fitsSystemWindows="true"
             app:title="My App"
+            app:collapseIcon="@drawable/back"
             app:titleTextColor="@color/white">
 
             <ImageView
                 android:id="@+id/watchlist_toolbar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/watch"
