@@ -33,7 +33,6 @@ public class WatchlistActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        toolbar.setTitle("Watchlist");
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         toolbar.setNavigationOnClickListener(V-> finish());
