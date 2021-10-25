@@ -203,7 +203,4 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
         }
     }
 
-    private void showDialogBox(View customLayout, String name) {
-
-    }
 }

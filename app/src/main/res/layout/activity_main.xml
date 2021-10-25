@@ -13,10 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -24,8 +20,8 @@
             android:layout_height="wrap_content"
             android:background="@color/appBar_Color"
             android:fitsSystemWindows="true"
-            app:title="My App"
             app:collapseIcon="@drawable/back"
+            app:title="My App"
             app:titleTextColor="@color/white">
 
             <ImageView
@@ -34,13 +30,14 @@
                 android:layout_height="25dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/watch"
-                android:contentDescription="@string/watch_list_icon_in_main_screen" />
+                android:contentDescription="@string/watch_list_icon_in_main_screen"
+                android:src="@drawable/watch" />
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="?android:attr/actionBarSize">
 
 
             <androidx.core.widget.NestedScrollView
@@ -69,138 +66,51 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp">
 
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/all_button"
+                            <include
+                                android:id="@+id/custom1"
+                                layout="@layout/sort_buttons"
                                 android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="@color/cardStrokeColor"
-                                app:strokeWidth="1dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/all"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
+                                android:layout_height="wrap_content" />
 
                             <Space
                                 android:layout_width="6dp"
                                 android:layout_height="0dp" />
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/top_rated_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="#212121"
-                                app:strokeWidth="1dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/top_rated"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
+                            <include
+                                android:id="@+id/custom2"
+                                layout="@layout/sort_buttons" />
 
                             <Space
                                 android:layout_width="6dp"
                                 android:layout_height="0dp" />
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/popular_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="#212121"
-                                app:strokeWidth="1dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/popular"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
+                            <include
+                                android:id="@+id/custom3"
+                                layout="@layout/sort_buttons" />
 
                             <Space
                                 android:layout_width="6dp"
                                 android:layout_height="0dp" />
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/favorites_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="#212121"
-                                app:strokeWidth="1dp">
+                            <include
+                                android:id="@+id/custom4"
+                                layout="@layout/sort_buttons" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/favorites"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
                             <Space
                                 android:layout_width="6dp"
                                 android:layout_height="0dp" />
 
+                            <include
+                                android:id="@+id/custom5"
+                                layout="@layout/sort_buttons" />
 
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/movies_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="#212121"
-                                app:strokeWidth="1dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/movies"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
                             <Space
                                 android:layout_width="6dp"
                                 android:layout_height="0dp" />
 
-
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/most_watched_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/sortBtnBG"
-                                app:contentPadding="5dp"
-                                app:strokeColor="#212121"
-                                app:strokeWidth="1dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/most_watched_shows"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.card.MaterialCardView>
-
-
+                            <include
+                                android:id="@+id/custom6"
+                                layout="@layout/sort_buttons" />
 
 
                         </LinearLayout>
@@ -224,7 +134,7 @@
                         android:id="@+id/circular_progressBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:indeterminateTint="#D4ECDD"/>
+                        android:indeterminateTint="#D4ECDD" />
 
                 </LinearLayout>
 
@@ -237,30 +147,25 @@
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
+                android:contentDescription="@string/go_to_top_fab_button"
                 android:src="@drawable/arrow_up"
                 app:backgroundTint="#F3F1F5"
                 app:fabSize="normal"
-                tools:ignore="SpeakableTextPresentCheck"
-                android:contentDescription="@string/go_to_top_fab_button" />
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
         </FrameLayout>
 
 
-    </LinearLayout>
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/cardBg"/>-->
     </FrameLayout>
 
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/drawer_nav"
-        android:background="@color/cardBg"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/cardBg"
         app:itemTextColor="@color/white"
         app:menu="@menu/navigation_menu">
 
@@ -274,8 +179,8 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/stack"
-                android:contentDescription="@string/app_icon" />
+                android:contentDescription="@string/app_icon"
+                android:src="@drawable/stack" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
