@@ -83,7 +83,11 @@
 
                                 android:text="82.14"
                                 android:textColor="@color/white"
-                                android:textSize="18sp" />
+                                android:textSize="18sp">
+
+
+
+                            </TextView>
 
                             <ImageView
                                 android:layout_width="wrap_content"

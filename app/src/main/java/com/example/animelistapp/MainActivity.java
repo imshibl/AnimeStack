@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,10 +81,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+
+
+
 
         sharedPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
@@ -101,16 +109,36 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+
+
         floatingActionButton.setVisibility(View.GONE);
 
         networking = new Networking(this, progressBar, animeRecyclerAdapter, sortingOptionsArea, recyclerView, animeModelList);
 
-        allButton = findViewById(R.id.all_button);
-        topRatedButton = findViewById(R.id.top_rated_button);
-        popularButton = findViewById(R.id.popular_button);
-        favoritesButton = findViewById(R.id.favorites_button);
-        moviesButton = findViewById(R.id.movies_button);
-        mostWatchedButton = findViewById(R.id.most_watched_button);
+//        allButton = findViewById(R.id.all_button);
+//        topRatedButton = findViewById(R.id.top_rated_button);
+//        popularButton = findViewById(R.id.popular_button);
+//        favoritesButton = findViewById(R.id.favorites_button);
+//        moviesButton = findViewById(R.id.movies_button);
+//        mostWatchedButton = findViewById(R.id.most_watched_button);
+        allButton = findViewById(R.id.custom1);
+        TextView all = allButton.findViewById(R.id.card_text);
+        all.setText("All");
+        topRatedButton = findViewById(R.id.custom2);
+        TextView topRated = topRatedButton.findViewById(R.id.card_text);
+        topRated.setText("Top Rated");
+        popularButton = findViewById(R.id.custom3);
+        TextView popular = popularButton.findViewById(R.id.card_text);
+        popular.setText("Popular");
+        favoritesButton = findViewById(R.id.custom4);
+        TextView favorites = favoritesButton.findViewById(R.id.card_text);
+        favorites.setText("Favorites");
+        moviesButton = findViewById(R.id.custom5);
+        TextView movies = moviesButton.findViewById(R.id.card_text);
+        movies.setText("Movies");
+        mostWatchedButton = findViewById(R.id.custom6);
+        TextView mostWatched = mostWatchedButton.findViewById(R.id.card_text);
+        mostWatched.setText("Most Watched Shows");
 
         //custom tool/appbar bar
         toolbar = findViewById(R.id.toolbar);

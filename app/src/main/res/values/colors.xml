@@ -10,13 +10,11 @@
 
 <!--    my colors-->
     <color name="appBar_Color">#152D35</color>
-    <color name="statusBar_Color">#345B63</color>
     <color name="sortBtnBG">#B2B1B9</color>
 
     <color name="bgColor">#334756</color>
 
     <color name="cardBg">#212121</color>
-    <color name="cardTextColor">#2D2828</color>
 
     <color name="cardStrokeColor">#212121</color>
 </resources>

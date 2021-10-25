@@ -54,7 +54,10 @@
                         android:text="82.14"
                         android:textColor="@color/white"
                         android:textSize="14dp"
-                        android:fontFamily="sans-serif-medium" />
+                        android:fontFamily="sans-serif-medium">
+
+
+                    </TextView>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="14dp"

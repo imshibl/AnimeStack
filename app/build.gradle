@@ -5,6 +5,8 @@ plugins {
 android {
     compileSdk 30
 
+    dataBinding { enabled = true }
+
     defaultConfig {
         applicationId "com.example.animelistapp"
         minSdk 21
@@ -50,13 +52,6 @@ dependencies {
     testImplementation "android.arch.persistence.room:testing:$room_version"
 
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
-
-
-
-
-
-
-
 
 
 }
