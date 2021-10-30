@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/activity_main.xml" value="0.18" />
+        <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.19010416666666666" />
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/activity_watchlist.xml" value="0.19746376811594202" />
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/anime_list_layout.xml" value="0.33" />
-        <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/custom_alert_dialog.xml" value="0.25" />
+        <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/custom_alert_dialog.xml" value="0.22" />
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/nav_header.xml" value="0.19972826086956522" />
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/sort_buttons.xml" value="0.20416666666666666" />
         <entry key="..\:/AndroidProjects/AnimeListApp/app/src/main/res/layout/watch_list_layout.xml" value="0.19746376811594202" />

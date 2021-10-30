@@ -140,6 +140,15 @@
 
             </androidx.core.widget.NestedScrollView>
 
+            <ImageView
+                android:id="@+id/error_image"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/network"
+                android:layout_gravity="center"/>
+
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_button"
                 android:layout_width="wrap_content"

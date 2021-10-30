@@ -80,21 +80,16 @@
                                 android:id="@+id/rating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
                                 android:text="82.14"
                                 android:textColor="@color/white"
-                                android:textSize="18sp">
+                                android:textSize="18sp"
+                                android:drawablePadding="3dp"
+                                app:drawableRightCompat="@drawable/rating_badge">
 
 
 
                             </TextView>
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="2dp"
-
-                                android:src="@drawable/rating_badge" />
                         </LinearLayout>
 
                         <TextView

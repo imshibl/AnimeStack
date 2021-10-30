@@ -6,10 +6,10 @@ import androidx.room.Room;
 
 public class DatabaseClient {
 
-    private Context mContext;
+    private final Context mContext;
     private static DatabaseClient mInstance;
 
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
 
     public DatabaseClient(Context mContext) {
         this.mContext = mContext;

@@ -41,11 +41,9 @@
                     android:text="Cowboy Bebop"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/white"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
 
                     <TextView
                         android:id="@+id/rating"
@@ -53,18 +51,15 @@
                         android:layout_height="wrap_content"
                         android:text="82.14"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
-                        android:fontFamily="sans-serif-medium">
+                        android:textSize="16sp"
+                        android:drawablePadding="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        app:drawableRightCompat="@drawable/rating_badge" />
 
 
-                    </TextView>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="14dp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="2dp"
-                        android:src="@drawable/rating_badge"/>
-                </LinearLayout>
+
+
+
 
                 <TextView
                     android:id="@+id/subType"
