@@ -15,4 +15,7 @@
     <string name="go_to_top_fab_button">go to top fab button</string>
     <string name="app_icon">app icon</string>
     <string name="cover_image">cover image</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

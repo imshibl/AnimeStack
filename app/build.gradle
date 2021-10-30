@@ -27,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -51,7 +54,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     testImplementation "android.arch.persistence.room:testing:$room_version"
 
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
+//    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
 
 
 }

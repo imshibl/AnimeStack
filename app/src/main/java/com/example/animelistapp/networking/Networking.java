@@ -1,8 +1,8 @@
 package com.example.animelistapp.networking;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,7 +15,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.animelistapp.MainActivity;
 import com.example.animelistapp.adapter.AnimeRecyclerAdapter;
 import com.example.animelistapp.model.AnimeModel;
 
@@ -34,6 +33,7 @@ public class Networking {
     AnimeRecyclerAdapter animeRecyclerAdapter;
     LinearLayout linearLayout;
     List<AnimeModel> animeModelList;
+    ImageView errorImage;
 
     String url;
     String title;
@@ -50,13 +50,14 @@ public class Networking {
 
     final String BASE_URL = "https://kitsu.io/api/edge/anime";
 
-    public Networking(Context mContext, ProgressBar progressBar, AnimeRecyclerAdapter animeRecyclerAdapter, LinearLayout linearLayout, RecyclerView recyclerView, List<AnimeModel> animeModelList) {
+    public Networking(Context mContext, ProgressBar progressBar, AnimeRecyclerAdapter animeRecyclerAdapter, LinearLayout linearLayout, RecyclerView recyclerView, List<AnimeModel> animeModelList, ImageView errorImage) {
         this.mContext = mContext;
         this.progressBar = progressBar;
         this.animeRecyclerAdapter = animeRecyclerAdapter;
         this.linearLayout = linearLayout;
         this.recyclerView = recyclerView;
         this.animeModelList = animeModelList;
+        this.errorImage = errorImage;
     }
 
     public void getAllData(int pageNum, int limit, String sort) {
@@ -67,19 +68,25 @@ public class Networking {
         }
 
 
-
-        if (sort.equals("all")) {
-            url = BASE_URL + "?page[offset]=" + pageNum;
-        } else if (sort.equals("top_rated")) {
-            url = BASE_URL + "?sort=ratingRank&page[offset]=" + pageNum;
-        } else if (sort.equals("popular")) {
-            url = BASE_URL + "?sort=popularityRank&page[offset]=" + pageNum;
-        } else if (sort.equals("favorites")) {
-            url = BASE_URL + "?sort=-favoritesCount&page[offset]=" + pageNum;
-        } else if (sort.equals("movies")) {
-            url = BASE_URL + "?filter[subtype]=movie&sort=-userCount&page[offset]=" + pageNum;
-        }else if(sort.equals("most_watched")){
-            url = BASE_URL + "?filter[subtype]=tv&sort=-userCount&page[offset]=" + pageNum;
+        switch (sort) {
+            case "all":
+                url = BASE_URL + "?page[offset]=" + pageNum;
+                break;
+            case "top_rated":
+                url = BASE_URL + "?sort=ratingRank&page[offset]=" + pageNum;
+                break;
+            case "popular":
+                url = BASE_URL + "?sort=popularityRank&page[offset]=" + pageNum;
+                break;
+            case "favorites":
+                url = BASE_URL + "?sort=-favoritesCount&page[offset]=" + pageNum;
+                break;
+            case "movies":
+                url = BASE_URL + "?filter[subtype]=movie&sort=-userCount&page[offset]=" + pageNum;
+                break;
+            case "most_watched":
+                url = BASE_URL + "?filter[subtype]=tv&sort=-userCount&page[offset]=" + pageNum;
+                break;
         }
 
 
@@ -234,11 +241,14 @@ public class Networking {
 
                     animeRecyclerAdapter = new AnimeRecyclerAdapter(mContext, animeModelList);
                     recyclerView.setAdapter(animeRecyclerAdapter);
+//                    errorImage.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.VISIBLE);
 
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+//                    errorImage.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -246,6 +256,9 @@ public class Networking {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(mContext, "something went wrong", Toast.LENGTH_SHORT).show();
+                animeModelList.clear();
+                updateData();
+//                errorImage.setVisibility(View.VISIBLE);
             }
         });
 
