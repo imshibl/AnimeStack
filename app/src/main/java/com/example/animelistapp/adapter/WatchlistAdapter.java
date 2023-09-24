@@ -1,11 +1,9 @@
 package com.example.animelistapp.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelistapp.R;
-import com.example.animelistapp.WatchlistActivity;
 import com.example.animelistapp.database.DatabaseClient;
 import com.example.animelistapp.database.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHolder> {
 
@@ -93,27 +91,46 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHo
     }
 
     private void deleteItem(final Task task) {
-        class Delete extends AsyncTask<Void, Void, Void> {
+//        class Delete extends AsyncTask<Void, Void, Void> {
+//
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                DatabaseClient.getInstance(mContext)
+//                        .getAppDatabase()
+//                        .taskDao()
+//                        .delete(task);
+//
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void unused) {
+//                super.onPostExecute(unused);
+//                Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
+//        Delete dt = new Delete();
+//        dt.execute();
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.execute(new Runnable() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void run() {
                 DatabaseClient.getInstance(mContext)
                         .getAppDatabase()
                         .taskDao()
                         .delete(task);
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void unused) {
-                super.onPostExecute(unused);
-                Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
-        }
-        Delete dt = new Delete();
-        dt.execute();
+        });
 
     }
 }

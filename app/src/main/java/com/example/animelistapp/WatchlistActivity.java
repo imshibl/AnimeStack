@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +17,8 @@ import com.example.animelistapp.database.DatabaseClient;
 import com.example.animelistapp.database.Task;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WatchlistActivity extends AppCompatActivity {
 
@@ -33,7 +37,6 @@ public class WatchlistActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        toolbar.setTitle("Watchlist");
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         toolbar.setNavigationOnClickListener(V-> finish());
@@ -55,37 +58,69 @@ public class WatchlistActivity extends AppCompatActivity {
 
     void getWatchList(){
 
-        class GetWatchlist extends AsyncTask<Void, Void, List<Task>>{
+//        class GetWatchlist extends AsyncTask<Void, Void, List<Task>>{
+//
+//            @Override
+//            protected List<Task> doInBackground(Void... voids) {
+//                List<Task> taskList = DatabaseClient
+//                        .getInstance(getApplicationContext())
+//                        .getAppDatabase()
+//                        .taskDao()
+//                        .getAll();
+//                return taskList;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(List<Task> tasks) {
+//                super.onPostExecute(tasks);
+//                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks, emptyTv);
+//                recyclerView.setAdapter(watchlistAdapter);
+//
+//
+//
+//                if(tasks.isEmpty()){
+//                    emptyTv.setVisibility(View.VISIBLE);
+//                }else{
+//                    emptyTv.setVisibility(View.GONE);
+//                }
+//
+//
+//            }
+//        }
+//        GetWatchlist getWatchlist = new GetWatchlist();
+//        getWatchlist.execute();
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(new Runnable() {
             @Override
-            protected List<Task> doInBackground(Void... voids) {
+            public void run() {
+                //background work
                 List<Task> taskList = DatabaseClient
                         .getInstance(getApplicationContext())
                         .getAppDatabase()
                         .taskDao()
                         .getAll();
-                return taskList;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //ui thread work
+                        watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, taskList, emptyTv);
+                        recyclerView.setAdapter(watchlistAdapter);
+
+
+
+                        if(taskList.isEmpty()){
+                            emptyTv.setVisibility(View.VISIBLE);
+                        }else{
+                            emptyTv.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
             }
-
-            @Override
-            protected void onPostExecute(List<Task> tasks) {
-                super.onPostExecute(tasks);
-                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks, emptyTv);
-                recyclerView.setAdapter(watchlistAdapter);
-
-
-
-                if(tasks.isEmpty()){
-                    emptyTv.setVisibility(View.VISIBLE);
-                }else{
-                    emptyTv.setVisibility(View.GONE);
-                }
-
-
-            }
-        }
-        GetWatchlist getWatchlist = new GetWatchlist();
-        getWatchlist.execute();
+        });
     }
 
 

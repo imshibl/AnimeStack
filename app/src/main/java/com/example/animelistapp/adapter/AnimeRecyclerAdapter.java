@@ -1,9 +1,10 @@
 package com.example.animelistapp.adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,11 @@ import com.example.animelistapp.R;
 import com.example.animelistapp.database.DatabaseClient;
 import com.example.animelistapp.database.Task;
 import com.example.animelistapp.model.AnimeModel;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdapter.MyHolder> {
     Context context;
@@ -44,8 +45,6 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-
-
 
         try {
             String name = animeModelList.get(position).getTitle();
@@ -102,7 +101,7 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
                                 .load(cover)
                                 .placeholder(R.drawable.loading1)
                                 .into(coverImg);
-                    }else{
+                    } else {
                         poster.setVisibility(View.GONE);
                         coverImg.setVisibility(View.GONE);
                     }
@@ -118,7 +117,7 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
                 dialogBox.show();
             });
 
-            holder.animeCard.setOnLongClickListener(V ->{
+            holder.animeCard.setOnLongClickListener(V -> {
                 saveTask(position);
                 return true;
             });
@@ -134,46 +133,85 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
         String type = animeModelList.get(position).getSubType();
         String description = animeModelList.get(position).getDescription();
 
-        class SaveTask extends AsyncTask<Void, Void, Void>{
-            boolean dataExits;
+//        class SaveTask extends AsyncTask<Void, Void, Void>{
+//            boolean dataExits;
+//
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//
+//                Task task = new Task();
+//                task.setTitle(title);
+//                task.setType(type);
+//                task.setDescription(description);
+//
+//
+//                dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+//                        .taskDao().exists(title);
+//
+//                if(dataExits){
+//                    Log.d("appdata", "already here");
+//                }else{
+//                    DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+//                            .taskDao()
+//                            .insert(task);
+//                }
+//
+//
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void unused) {
+//                super.onPostExecute(unused);
+//                if(dataExits){
+//                    Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            }
+//        }
+//        SaveTask st = new SaveTask();
+//        st.execute();
 
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.execute(new Runnable() {
             @Override
-            protected Void doInBackground(Void... voids) {
-
+            public void run() {
                 Task task = new Task();
                 task.setTitle(title);
                 task.setType(type);
                 task.setDescription(description);
 
+                boolean dataExits;
+
 
                 dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
                         .taskDao().exists(title);
 
-                if(dataExits){
+                if (dataExits) {
                     Log.d("appdata", "already here");
-                }else{
+                } else {
                     DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
                             .taskDao()
                             .insert(task);
                 }
 
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (dataExits) {
+                            Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
+                        }
 
-                return null;
+                    }
+                });
+
             }
-
-            @Override
-            protected void onPostExecute(Void unused) {
-                super.onPostExecute(unused);
-                if(dataExits){
-                    Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }
-        SaveTask st = new SaveTask();
-        st.execute();
+        });
     }
 
     @Override
@@ -203,7 +241,4 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
         }
     }
 
-    private void showDialogBox(View customLayout, String name) {
-
-    }
 }

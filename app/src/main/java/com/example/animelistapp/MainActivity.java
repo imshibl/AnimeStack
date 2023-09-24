@@ -1,22 +1,32 @@
 package com.example.animelistapp;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,27 +34,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animelistapp.adapter.AnimeRecyclerAdapter;
+import com.example.animelistapp.broadcast.NetworkChangeReceiver;
 import com.example.animelistapp.database.DatabaseClient;
 import com.example.animelistapp.database.Task;
 import com.example.animelistapp.model.AnimeModel;
 import com.example.animelistapp.networking.Networking;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    List<AnimeModel> animeModelList;
+    static List<AnimeModel> animeModelList;
     AnimeRecyclerAdapter animeRecyclerAdapter;
 
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
+    static RecyclerView recyclerView;
+    static ProgressBar progressBar;
     NestedScrollView nestedScrollView;
 
     DrawerLayout drawerLayout;
@@ -52,31 +63,81 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     androidx.appcompat.widget.Toolbar toolbar;
 
-    LinearLayout sortingOptionsArea;
+    static LinearLayout sortingOptionsArea;
 
     FloatingActionButton floatingActionButton;
 
     ImageView watchListButton;
+    static ImageView errorImage;
 
-    Networking networking;
+
+    static Networking networking;
 
     MaterialCardView allButton, topRatedButton, popularButton, favoritesButton, moviesButton, mostWatchedButton;
 
     SharedPreferences sharedPreferences;
 
-    int page = 0;
+    public static int page = 0;
     //total pages
-    int pageLimit = 17000;
+    public static int pageLimit = 17000;
 
-    String sort = "all";
+    public static String sort = "all";
+
+    static boolean isSearching = false;
+
+    public static boolean isNetworkAvailable;
 
 
+    BroadcastReceiver broadcastReceiver = new NetworkChangeReceiver();
+    IntentFilter intentFilter;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            this.unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        page = 0;
+        sort = "all";
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            this.unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        try {
+            intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            this.registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(broadcastReceiver, intentFilter);
+
 
         sharedPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
@@ -93,16 +154,31 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+        errorImage = findViewById(R.id.error_image);
         floatingActionButton.setVisibility(View.GONE);
 
-        networking = new Networking(this, progressBar, animeRecyclerAdapter, sortingOptionsArea, recyclerView, animeModelList);
 
-        allButton = findViewById(R.id.all_button);
-        topRatedButton = findViewById(R.id.top_rated_button);
-        popularButton = findViewById(R.id.popular_button);
-        favoritesButton = findViewById(R.id.favorites_button);
-        moviesButton = findViewById(R.id.movies_button);
-        mostWatchedButton = findViewById(R.id.most_watched_button);
+        networking = new Networking(this, progressBar, animeRecyclerAdapter, sortingOptionsArea, recyclerView, animeModelList, errorImage);
+
+
+        allButton = findViewById(R.id.custom1);
+        TextView all = allButton.findViewById(R.id.card_text);
+        all.setText(R.string.all);
+        topRatedButton = findViewById(R.id.custom2);
+        TextView topRated = topRatedButton.findViewById(R.id.card_text);
+        topRated.setText(R.string.top_rated);
+        popularButton = findViewById(R.id.custom3);
+        TextView popular = popularButton.findViewById(R.id.card_text);
+        popular.setText(R.string.popular);
+        favoritesButton = findViewById(R.id.custom4);
+        TextView favorites = favoritesButton.findViewById(R.id.card_text);
+        favorites.setText(R.string.favorites);
+        moviesButton = findViewById(R.id.custom5);
+        TextView movies = moviesButton.findViewById(R.id.card_text);
+        movies.setText(R.string.movies);
+        mostWatchedButton = findViewById(R.id.custom6);
+        TextView mostWatched = mostWatchedButton.findViewById(R.id.card_text);
+        mostWatched.setText(R.string.most_watched_shows);
 
         //custom tool/appbar bar
         toolbar = findViewById(R.id.toolbar);
@@ -111,15 +187,13 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if(firstOpening == 0){
-            TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.watchlist_toolbar), "Watch Later", "Long Press On Desired Anime To Add Into Your Watch Later List")
-                    .cancelable(true)
-                    .transparentTarget(true));
+        if (firstOpening == 0) {
+//            TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.watchlist_toolbar), "Watch Later", "Long Press On Desired Anime To Add Into Your Watch Later List")
+//                    .cancelable(true)
+//                    .transparentTarget(true));
             sharedPrefEditor.putInt("first_opening", 1);
             sharedPrefEditor.apply();
-//            sharedPrefEditor.commit();
         }
-
 
 
         ActionBar actionBar = getSupportActionBar();
@@ -134,10 +208,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        watchListButton.setOnClickListener(V->{
-            startActivity(new Intent(this, WatchlistActivity.class));
-
-        });
+        watchListButton.setOnClickListener(V -> startActivity(new Intent(this, WatchlistActivity.class)));
 
         //drawer navigation view items controls
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -170,21 +241,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             progressBar.setVisibility(View.GONE);
         }
-        networking.getAllData(page, pageLimit, sort);
+//        networking.getAllData(page, pageLimit, sort);
+
+        showData(isNetworkAvailable);
+
         changeButton(allButton, topRatedButton, popularButton, favoritesButton, moviesButton, mostWatchedButton);
-
-
-
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(() -> {
-//            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(1);
-//            View view = viewHolder.itemView;
-//            TapTargetView.showFor(this, TapTarget.forView(view, "Tap", "Tap on item to display full details and long press on item to add in to watch list")
-//            .cancelable(true)
-//            .drawShadow(true)
-//            .tintTarget(true));
-//
-//        }, 4000);
 
 
 //sorting
@@ -262,16 +323,21 @@ public class MainActivity extends AppCompatActivity {
         //pagination
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                page = page + 10;
-                progressBar.setVisibility(View.VISIBLE);
-                networking.getAllData(page, pageLimit, sort);
+
+                if (!isSearching) {
+                    page = page + 10;
+                    progressBar.setVisibility(View.VISIBLE);
+                    networking.getAllData(page, pageLimit, sort);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+
             }
         });
 
         //go to top of screen
         floatingActionButton.setOnClickListener(v -> {
             nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
-            getWatchList();
         });
 
         //show/hide floating action button
@@ -287,31 +353,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getWatchList() {
-        class GetTasks extends AsyncTask<Void, Void, List<Task>>{
+    public static void showData(boolean isNetworkAvailable) {
 
-            @Override
-            protected List<Task> doInBackground(Void... voids) {
-                List<Task> taskList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .taskDao()
-                        .getAll();
-                return taskList;
+        if (isNetworkAvailable) {
+            if (animeModelList.isEmpty() && !isSearching) {
+                networking.getAllData(page, pageLimit, sort);
+            } else if (!animeModelList.isEmpty() && !isSearching) {
+                sortingOptionsArea.setVisibility(View.VISIBLE);
             }
+            errorImage.setVisibility(View.GONE);
 
-            @Override
-            protected void onPostExecute(List<Task> tasks) {
-                super.onPostExecute(tasks);
-                for(int i = 0; i<tasks.size(); i++){
-                    Log.d("appdata:", tasks.get(i).getTitle());
-                    Log.d("appdata:", tasks.get(i).getType());
-//                    Log.d("appdata:", tasks.get(i).getDescription());
-                }
-            }
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            errorImage.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            sortingOptionsArea.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.INVISIBLE);
+
+
         }
-        GetTasks gt = new GetTasks();
-        gt.execute();
     }
 
 
@@ -354,6 +415,71 @@ public class MainActivity extends AppCompatActivity {
         otherBtn5.setStrokeColor(getResources().getColor(R.color.cardStrokeColor));
         otherBtn5.setCardBackgroundColor(getResources().getColor(R.color.sortBtnBG));
         otherBtn5.setEnabled(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_bar, menu);
+        MenuItem item = menu.findItem(R.id.searchIcon);
+
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+
+                try {
+                    animeModelList.clear();
+                    networking.updateData();
+                    sortingOptionsArea.setVisibility(View.GONE);
+                    isSearching = true;
+                    progressBar.setVisibility(View.GONE);
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return false;
+
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                isSearching = false;
+                animeModelList.clear();
+                page = 0;
+                networking.updateData();
+                networking.getAllData(page, pageLimit, sort);
+                sortingOptionsArea.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
+
+        //search functions
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Search");
+        EditText editText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        editText.setTextColor(Color.WHITE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+                networking.getSearchData(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
 
