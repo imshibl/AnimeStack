@@ -8,7 +8,7 @@ android {
     dataBinding { enabled = true }
 
     defaultConfig {
-        applicationId "com.example.animelistapp"
+        applicationId "com.bilcodes.animestack"
         minSdk 21
         targetSdk 34
         versionCode 1
@@ -30,7 +30,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.example.animelistapp'
+    namespace 'com.bilcodes.animestack'
 }
 
 dependencies {

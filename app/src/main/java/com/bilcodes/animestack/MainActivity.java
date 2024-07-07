@@ -1,4 +1,4 @@
-package com.example.animelistapp;
+package com.bilcodes.animestack;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,11 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,20 +30,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.animelistapp.adapter.AnimeRecyclerAdapter;
-import com.example.animelistapp.broadcast.NetworkChangeReceiver;
-import com.example.animelistapp.database.DatabaseClient;
-import com.example.animelistapp.database.Task;
-import com.example.animelistapp.model.AnimeModel;
-import com.example.animelistapp.networking.Networking;
+import com.bilcodes.animestack.adapter.AnimeRecyclerAdapter;
+import com.bilcodes.animestack.broadcast.NetworkChangeReceiver;
+import com.bilcodes.animestack.model.AnimeModel;
+import com.bilcodes.animestack.networking.Networking;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 

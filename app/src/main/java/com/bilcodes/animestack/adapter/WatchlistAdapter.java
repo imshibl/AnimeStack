@@ -1,7 +1,6 @@
-package com.example.animelistapp.adapter;
+package com.bilcodes.animestack.adapter;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -14,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.animelistapp.R;
-import com.example.animelistapp.database.DatabaseClient;
-import com.example.animelistapp.database.Task;
+import com.bilcodes.animestack.R;
+import com.bilcodes.animestack.database.DatabaseClient;
+import com.bilcodes.animestack.database.Task;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

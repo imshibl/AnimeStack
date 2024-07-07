@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anime List App</string>
+    <string name="app_name">AnimeStack</string>
 
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>

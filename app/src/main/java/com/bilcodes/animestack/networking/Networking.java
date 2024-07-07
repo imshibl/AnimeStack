@@ -1,4 +1,4 @@
-package com.example.animelistapp.networking;
+package com.bilcodes.animestack.networking;
 
 import android.content.Context;
 import android.view.View;
@@ -15,8 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.animelistapp.adapter.AnimeRecyclerAdapter;
-import com.example.animelistapp.model.AnimeModel;
+import com.bilcodes.animestack.adapter.AnimeRecyclerAdapter;
+import com.bilcodes.animestack.model.AnimeModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

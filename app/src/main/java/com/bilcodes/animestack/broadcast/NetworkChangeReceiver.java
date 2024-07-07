@@ -1,6 +1,6 @@
-package com.example.animelistapp.broadcast;
+package com.bilcodes.animestack.broadcast;
 
-import static com.example.animelistapp.MainActivity.showData;
+import static com.bilcodes.animestack.MainActivity.showData;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

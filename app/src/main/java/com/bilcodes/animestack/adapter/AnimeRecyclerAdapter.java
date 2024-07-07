@@ -1,8 +1,7 @@
-package com.example.animelistapp.adapter;
+package com.bilcodes.animestack.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -17,10 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.animelistapp.R;
-import com.example.animelistapp.database.DatabaseClient;
-import com.example.animelistapp.database.Task;
-import com.example.animelistapp.model.AnimeModel;
+import com.bilcodes.animestack.R;
+import com.bilcodes.animestack.database.DatabaseClient;
+import com.bilcodes.animestack.database.Task;
+import com.bilcodes.animestack.model.AnimeModel;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;

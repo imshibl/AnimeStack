@@ -1,4 +1,4 @@
-package com.example.animelistapp.database;
+package com.bilcodes.animestack.database;
 
 import android.content.Context;
 

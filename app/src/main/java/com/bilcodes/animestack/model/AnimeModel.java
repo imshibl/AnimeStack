@@ -1,4 +1,4 @@
-package com.example.animelistapp.model;
+package com.bilcodes.animestack.model;
 
 public class AnimeModel {
 

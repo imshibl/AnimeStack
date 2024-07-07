@@ -1,4 +1,4 @@
-package com.example.animelistapp;
+package com.bilcodes.animestack;
 
 import androidx.appcompat.app.AppCompatActivity;
 

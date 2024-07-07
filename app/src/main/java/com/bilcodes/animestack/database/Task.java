@@ -1,4 +1,4 @@
-package com.example.animelistapp.database;
+package com.bilcodes.animestack.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

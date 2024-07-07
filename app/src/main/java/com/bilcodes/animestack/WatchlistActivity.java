@@ -1,20 +1,19 @@
-package com.example.animelistapp;
+package com.bilcodes.animestack;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.animelistapp.adapter.WatchlistAdapter;
-import com.example.animelistapp.database.DatabaseClient;
-import com.example.animelistapp.database.Task;
+import com.bilcodes.animestack.adapter.WatchlistAdapter;
+import com.bilcodes.animestack.database.DatabaseClient;
+import com.bilcodes.animestack.database.Task;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
