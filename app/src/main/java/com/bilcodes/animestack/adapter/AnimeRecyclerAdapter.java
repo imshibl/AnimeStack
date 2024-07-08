@@ -23,6 +23,7 @@ import com.bilcodes.animestack.model.AnimeModel;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -122,7 +123,7 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
         }
 
     }

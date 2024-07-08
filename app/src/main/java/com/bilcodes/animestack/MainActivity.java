@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             this.unregisterReceiver(broadcastReceiver);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
         }
 
         page = 0;
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             this.unregisterReceiver(broadcastReceiver);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
         }
 
 
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 this.registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
         }
 
     }
@@ -436,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     return true;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("", Objects.requireNonNull(e.getMessage()));
                 }
 
                 return false;

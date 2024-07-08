@@ -1,6 +1,7 @@
 package com.bilcodes.animestack.networking;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Networking {
 
@@ -144,7 +146,7 @@ public class Networking {
 
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("", Objects.requireNonNull(e.getMessage()));
             }
 
         }, error -> Toast.makeText(mContext, "something went wrong", Toast.LENGTH_SHORT).show());
@@ -170,7 +172,7 @@ public class Networking {
         try {
             url = BASE_URL + "?filter[text]=" + search + "&page[limit]=20";
         }catch (Exception e){
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
 
         }
 
@@ -234,7 +236,7 @@ public class Networking {
 
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("", Objects.requireNonNull(e.getMessage()));
 
             }
 

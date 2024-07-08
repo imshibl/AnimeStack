@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class NetworkChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -47,7 +49,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 Toast.makeText(context, "Network not available,", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
         }
     }
 
@@ -57,7 +59,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnectedOrConnecting();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("", Objects.requireNonNull(e.getMessage()));
             return false;
         }
 
