@@ -221,7 +221,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.watchlist) {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, WatchlistActivity.class));
-            } else if (item.getItemId() == R.id.share) {
+            }else if (item.getItemId() == R.id.chat) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, StackBotChatActivity.class));
+            }
+            else if (item.getItemId() == R.id.share) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 String url = "http://play.google.com/store/apps/details?id=" + this.getPackageName();

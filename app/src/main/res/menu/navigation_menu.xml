@@ -9,6 +9,10 @@
         android:title="Watch List"
         android:icon="@drawable/bookmark"/>
     <item
+        android:id="@+id/chat"
+        android:title="Stack Bot"
+        android:icon="@drawable/chat"/>
+    <item
         android:id="@+id/share"
         android:title="Share This App"
         android:icon="@drawable/share"/>
