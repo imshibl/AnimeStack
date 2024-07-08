@@ -26,32 +26,16 @@ public class AnimeModel {
         return coverImage;
     }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
     public String getSubType() {
         return subType;
-    }
-
-    public void setSubType(String subType) {
-        this.subType = subType;
     }
 
     public String getAgeRating() {
         return ageRating;
     }
 
-    public void setAgeRating(String ageRating) {
-        this.ageRating = ageRating;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getTitle() {
@@ -66,23 +50,12 @@ public class AnimeModel {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPosterImage() {
         return posterImage;
-    }
-
-    public void setPosterImage(String posterImage) {
-        this.posterImage = posterImage;
     }
 
     public String getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
 }

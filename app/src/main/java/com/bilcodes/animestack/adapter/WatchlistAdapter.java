@@ -90,45 +90,17 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.MyHo
     }
 
     private void deleteItem(final Task task) {
-//        class Delete extends AsyncTask<Void, Void, Void> {
-//
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                DatabaseClient.getInstance(mContext)
-//                        .getAppDatabase()
-//                        .taskDao()
-//                        .delete(task);
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void unused) {
-//                super.onPostExecute(unused);
-//                Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }
-//        Delete dt = new Delete();
-//        dt.execute();
+
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                DatabaseClient.getInstance(mContext)
-                        .getAppDatabase()
-                        .taskDao()
-                        .delete(task);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        executorService.execute(() -> {
+            DatabaseClient.getInstance(mContext)
+                    .getAppDatabase()
+                    .taskDao()
+                    .delete(task);
+            handler.post(() -> Toast.makeText(mContext, "Removed", Toast.LENGTH_SHORT).show());
 
-            }
         });
 
     }
