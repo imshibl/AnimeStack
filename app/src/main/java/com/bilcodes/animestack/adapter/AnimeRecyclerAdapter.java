@@ -56,14 +56,14 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
 //            String halfDesc = desc.substring(0, 80);
             holder.description.setText(desc);
 
-            holder.type.setText("Type:" + animeModelList.get(position).getSubType());
-            holder.ageRating.setText("Age Rating:" + animeModelList.get(position).getAgeRating());
+            holder.type.setText(String.format("Type:%s", animeModelList.get(position).getSubType()));
+            holder.ageRating.setText(String.format("Age Rating:%s", animeModelList.get(position).getAgeRating()));
 
             String subType = animeModelList.get(position).getSubType();
             if (subType.equals("movie")) {
                 holder.status.setVisibility(View.INVISIBLE);
             } else {
-                holder.status.setText("Status:" + animeModelList.get(position).getStatus());
+                holder.status.setText(String.format("Status:%s", animeModelList.get(position).getStatus()));
             }
 
 
@@ -87,8 +87,8 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
 
                 title.setText(name);
                 rating1.setText(rating);
-                type.setText("Type:" + animeModelList.get(position).getSubType());
-                ageRating.setText("Age Rating:" + animeModelList.get(position).getAgeRating());
+                type.setText(String.format("Type:%s", animeModelList.get(position).getSubType()));
+                ageRating.setText(String.format("Age Rating:%s", animeModelList.get(position).getAgeRating()));
                 description.setText(desc);
                 Glide.with(context)
                         .load(animeModelList.get(position).getPosterImage())
@@ -132,84 +132,39 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<AnimeRecyclerAdap
         String type = animeModelList.get(position).getSubType();
         String description = animeModelList.get(position).getDescription();
 
-//        class SaveTask extends AsyncTask<Void, Void, Void>{
-//            boolean dataExits;
-//
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//
-//                Task task = new Task();
-//                task.setTitle(title);
-//                task.setType(type);
-//                task.setDescription(description);
-//
-//
-//                dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
-//                        .taskDao().exists(title);
-//
-//                if(dataExits){
-//                    Log.d("appdata", "already here");
-//                }else{
-//                    DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
-//                            .taskDao()
-//                            .insert(task);
-//                }
-//
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void unused) {
-//                super.onPostExecute(unused);
-//                if(dataExits){
-//                    Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//        }
-//        SaveTask st = new SaveTask();
-//        st.execute();
+
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                Task task = new Task();
-                task.setTitle(title);
-                task.setType(type);
-                task.setDescription(description);
+        executorService.execute(() -> {
+            Task task = new Task();
+            task.setTitle(title);
+            task.setType(type);
+            task.setDescription(description);
 
-                boolean dataExits;
+            boolean dataExits;
 
 
-                dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
-                        .taskDao().exists(title);
+            dataExits = DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+                    .taskDao().exists(title);
 
+            if (dataExits) {
+                Log.d("appdata", "already here");
+            } else {
+                DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .insert(task);
+            }
+
+            handler.post(() -> {
                 if (dataExits) {
-                    Log.d("appdata", "already here");
+                    Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
                 } else {
-                    DatabaseClient.getInstance(context.getApplicationContext()).getAppDatabase()
-                            .taskDao()
-                            .insert(task);
+                    Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
                 }
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (dataExits) {
-                            Toast.makeText(context, "Already available in watchlist", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, "Added to watchlist", Toast.LENGTH_SHORT).show();
-                        }
+            });
 
-                    }
-                });
-
-            }
         });
     }
 

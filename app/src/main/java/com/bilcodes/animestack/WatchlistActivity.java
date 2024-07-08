@@ -1,5 +1,6 @@
 package com.bilcodes.animestack;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
+import android.window.OnBackInvokedDispatcher;
 
 import com.bilcodes.animestack.adapter.WatchlistAdapter;
 import com.bilcodes.animestack.database.DatabaseClient;
@@ -47,78 +49,46 @@ public class WatchlistActivity extends AppCompatActivity {
 
 
         getWatchList();
+
+
     }
 
+
+    @NonNull
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public OnBackInvokedDispatcher getOnBackInvokedDispatcher() {
         finish();
+        return super.getOnBackInvokedDispatcher();
     }
 
     void getWatchList(){
 
-//        class GetWatchlist extends AsyncTask<Void, Void, List<Task>>{
-//
-//            @Override
-//            protected List<Task> doInBackground(Void... voids) {
-//                List<Task> taskList = DatabaseClient
-//                        .getInstance(getApplicationContext())
-//                        .getAppDatabase()
-//                        .taskDao()
-//                        .getAll();
-//                return taskList;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(List<Task> tasks) {
-//                super.onPostExecute(tasks);
-//                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, tasks, emptyTv);
-//                recyclerView.setAdapter(watchlistAdapter);
-//
-//
-//
-//                if(tasks.isEmpty()){
-//                    emptyTv.setVisibility(View.VISIBLE);
-//                }else{
-//                    emptyTv.setVisibility(View.GONE);
-//                }
-//
-//
-//            }
-//        }
-//        GetWatchlist getWatchlist = new GetWatchlist();
-//        getWatchlist.execute();
+
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                //background work
-                List<Task> taskList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .taskDao()
-                        .getAll();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //ui thread work
-                        watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, taskList, emptyTv);
-                        recyclerView.setAdapter(watchlistAdapter);
+        executorService.execute(() -> {
+            //background work
+            List<Task> taskList = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .taskDao()
+                    .getAll();
+            handler.post(() -> {
+                //ui thread work
+                watchlistAdapter = new WatchlistAdapter(WatchlistActivity.this, taskList, emptyTv);
+                recyclerView.setAdapter(watchlistAdapter);
 
 
 
-                        if(taskList.isEmpty()){
-                            emptyTv.setVisibility(View.VISIBLE);
-                        }else{
-                            emptyTv.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                if(taskList.isEmpty()){
+                    emptyTv.setVisibility(View.VISIBLE);
+                }else{
+                    emptyTv.setVisibility(View.GONE);
+                }
+            });
 
-            }
         });
     }
 
